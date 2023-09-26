@@ -35,7 +35,7 @@ const peopleBio = [
     link: "https://github.com/myoktariansyah",
   },
   {
-    name: "Novita Aulya",
+    name: "Novita Auliya",
     age: 21,
     text: "Gaktau Males Mau Beli Truk",
     profile: "https://avatars.githubusercontent.com/u/82640637?v=4",
