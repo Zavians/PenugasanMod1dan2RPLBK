@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './components/header/Header';
@@ -6,59 +6,64 @@ import Home from './components/home/Home';
 import Button from "./elements/button";
 import TextInput from "./elements/TextInput";
 
-const peopleBio = [
-  {
-    name: "Kenza Vianda Dwiputra",
-    age: 21,
-    text: "Semoga Saya Gk NT",
-    profile: "https://avatars.githubusercontent.com/u/94980985?v=4",
-    nim: "21120120140046",
-    email: "kenzatekkom20@gmail.com",
-    link: "https://github.com/Zavians",
-  },
-  {
-    name: "Muhammad Fachrurazi",
-    age: 21,
-    text: "Gk tau gk ada quotes",
-    profile: "https://avatars.githubusercontent.com/u/82750808?v=4",
-    nim: "21120120140104",
-    email: "fachrurazi021@gmail.com",
-    link: "https://github.com/fachru24",
-  },
-  {
-    name: "Yahya Oktariansyah",
-    age: 21,
-    text: "Saya Kahim Saya Bangga",
-    profile: "https://avatars.githubusercontent.com/u/82740376?v=4",
-    nim: "21120120140037",
-    email: "myoktariansyah@students.undip.ac.id",
-    link: "https://github.com/myoktariansyah",
-  },
-  {
-    name: "Novita Auliya",
-    age: 21,
-    text: "Gaktau Males Mau Beli Truk",
-    profile: "https://avatars.githubusercontent.com/u/82640637?v=4",
-    nim: "21120120140114",
-    email: "novitaaly4@gmail.com",
-    link: "https://github.com/novitaaly",
-  },
+const initialPeopleBio = [
+  // Data orang-orang seperti yang telah Anda berikan
 ];
 
 function App() {
-  const [inputName, setInputName] = useState(''); // State untuk input nama
-  const [filteredPeople, setFilteredPeople] = useState(peopleBio);
+  const [inputName, setInputName] = useState('');
+  const [inputNim, setInputNim] = useState('');
+  const [inputAge, setInputAge] = useState('');
+  const [inputEmail, setInputEmail] = useState('');
+  const [peopleBio, setPeopleBio] = useState(initialPeopleBio);
 
   const handleNameInputChange = (event) => {
     setInputName(event.target.value);
   };
 
-  const handleFilterPeople = () => {
-    // Filter data orang berdasarkan input nama
-    const filtered = peopleBio.filter((person) =>
-      person.name.toLowerCase().includes(inputName.toLowerCase())
-    );
-    setFilteredPeople(filtered);
+  const handleNimInputChange = (event) => {
+    setInputNim(event.target.value);
+  };
+
+  const handleAgeInputChange = (event) => {
+    setInputAge(event.target.value);
+  };
+
+  const handleEmailInputChange = (event) => {
+    setInputEmail(event.target.value);
+  };
+
+  const handleAddPerson = () => {
+    if (inputName.trim() !== '') {
+      const newPerson = {
+        id: Date.now(), // Tambahkan properti ID unik
+        name: inputName,
+        nim: inputNim,
+        age: inputAge,
+        email: inputEmail,
+        text: '', // Atur teks sesuai kebutuhan
+        profile: '', // Atur profil sesuai kebutuhan
+        link: '', // Atur link sesuai kebutuhan
+      };
+      setPeopleBio([...peopleBio, newPerson]);
+      setInputName('');
+      setInputNim('');
+      setInputAge('');
+      setInputEmail('');
+    }
+  };
+
+  const handleClearAllData = () => {
+    setPeopleBio([]); // Menghapus semua data dengan mengatur peopleBio menjadi array kosong
+    setInputName('');
+    setInputNim('');
+    setInputAge('');
+    setInputEmail('');
+  };
+
+  const handleRemovePerson = (id) => {
+    const updatedPeopleBio = peopleBio.filter((person) => person.id !== id);
+    setPeopleBio(updatedPeopleBio);
   };
 
   return (
@@ -67,25 +72,67 @@ function App() {
         <Header />
       </div>
 
-      <div style={{ textAlign: 'center' }}>
+      <div className='text-center'>
         <h1>Tugas Praktikum</h1>
         <h2>Ini adalah hasil dari penugasan yang dikerjakan oleh kelompok 21</h2>
       </div>
-      <div>
-          <input
-            type='text'
-            placeholder='Masukkan nama...'
-            value={inputName}
-            onChange={handleNameInputChange}
-            className='TextInput'
-          />
-          <button onClick={handleFilterPeople} className='FilterButton'>Filter</button>
-        </div>
-      <h2>Nama yang dimasukkan: {inputName}</h2>
+
+      <div className='text-center'>
+        {/* Input dan tombol Tambah Anggota */}
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <input
+                  type='text'
+                  placeholder='Masukkan nama...'
+                  value={inputName}
+                  onChange={handleNameInputChange}
+                  className='TextInput'
+                />
+              </td>
+              <td>
+                <input
+                  type='text'
+                  placeholder='Masukkan NIM...'
+                  value={inputNim}
+                  onChange={handleNimInputChange}
+                  className='TextInput'
+                />
+              </td>
+              <td>
+                <input
+                  type='text'
+                  placeholder='Masukkan umur...'
+                  value={inputAge}
+                  onChange={handleAgeInputChange}
+                  className='TextInput'
+                />
+              </td>
+              <td>
+                <input
+                  type='text'
+                  placeholder='Masukkan email...'
+                  value={inputEmail}
+                  onChange={handleEmailInputChange}
+                  className='TextInput'
+                />
+              </td>
+              <td>
+                <button onClick={handleAddPerson} className='AddPersonButton'>Tambah Anggota</button>
+                <button onClick={handleClearAllData} className='ClearAllDataButton'>Clear All Data</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 className='text-center'>Nama yang dimasukkan: {inputName}</h2>
       <div className='d-flex flex-wrap justify-content-around w-100 p-3'>
-        
-        {filteredPeople.map((person, index) => (
-          <Home key={index} props={person} />
+        {peopleBio.map((person) => (
+          <Home key={person.id} props={person}>
+            <button onClick={() => handleRemovePerson(person.id)}>Hapus</button>
+          </Home>
         ))}
       </div>
     </>
@@ -93,6 +140,3 @@ function App() {
 }
 
 export default App;
-
-
-
